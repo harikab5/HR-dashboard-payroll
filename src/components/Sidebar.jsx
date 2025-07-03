@@ -1,50 +1,58 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+ import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FaUserCheck, FaUsersCog, FaMapMarkerAlt, FaMoneyCheckAlt, FaHistory, FaCog } from "react-icons/fa";
 
 const navItems = [
-  { icon: <FaUserCheck />, label: "Leave Approvals", path: "/" },
-  { icon: <FaUsersCog />, label: "Manage Employees", path: "/manage-employees" },
-  { icon: <FaMapMarkerAlt />, label: "Work Location", path: "/work-location" },
+  { icon: <FaUserCheck />, label: "Leave Approvals", path: "/leave-approvals" },
+  { icon: <FaUsersCog />, label: "Manage Employees", path: "/manageroles" },
+  { icon: <FaMapMarkerAlt />, label: "Work Location", path: "#" },
   { icon: <FaMoneyCheckAlt />, label: "Payroll", path: "/payroll" },
   { icon: <FaHistory />, label: "Attendance History", path: "/attendance-history" },
-  { icon: <FaCog />, label: "Settings", path: "/settings" }, // Added Settings here
+  { icon: <FaCog />, label: "Settings", path: "/settings" },
 ];
 
-const Sidebar = () => (
-  <aside className="h-screen w-60 bg-blue-700 flex flex-col items-center py-8 shadow-lg">
-    {/* Profile Section */}
-    <div className="flex flex-col items-center mb-10">
-      <img
-        src="https://randomuser.me/api/portraits/men/32.jpg"
-        alt="Profile"
-        className="w-16 h-16 rounded-full mb-3 border-4 border-blue-900 object-cover"
-      />
-      <span className="text-lg font-semibold text-white">John Doe</span>
-      <span className="text-sm text-blue-200">HR Manager</span>
-    </div>
-    {/* Navigation */}
-    <nav className="w-full flex-1">
-      <ul className="flex flex-col gap-3 w-full px-4">
+const Sidebar = () => {
+  const location = useLocation();
+
+  return (
+    <div className="flex flex-col items-center h-full">
+      {/* Profile Section */}
+      <div className="flex flex-col items-center mb-8">
+        <img
+          src="https://randomuser.me/api/portraits/men/1.jpg"
+          alt="Profile"
+          className="w-20 h-20 rounded-full mb-2 object-cover"
+        />
+        <span className="font-bold text-lg text-gray-900">John Doe</span>
+        <span className="text-sm text-gray-500">HR Manager</span>
+      </div>
+      {/* Navigation */}
+      <nav className="flex-1 w-full">
         {navItems.map((item) => (
-          <li key={item.label}>
-            <NavLink
-              to={item.path}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-white hover:bg-blue-800 transition ${
-                  isActive ? "bg-blue-900" : ""
-                }`
-              }
-              end
-            >
-              <span className="text-xl">{item.icon}</span>
-              <span>{item.label}</span>
-            </NavLink>
-          </li>
+          <Link
+            key={item.label}
+            to={item.path}
+            className={`flex items-center gap-3 px-4 py-3 my-1 rounded-lg transition-colors ${
+              location.pathname === item.path
+                ? "bg-blue-600 text-white"
+                : "text-white hover:bg-blue-100 hover:text-blue-700"
+            }`}
+            style={{ background: location.pathname === item.path ? "#2563EB" : undefined }}
+          >
+            <span className="text-lg">{item.icon}</span>
+            <span className="font-medium">{item.label}</span>
+          </Link>
         ))}
-      </ul>
-    </nav>
-  </aside>
-);
- 
+      </nav>
+      {/* Back to Dashboard Button */}
+      <Link
+        to="/"
+        className="mt-8 mb-2 bg-gray-300 hover:bg-gray-400 text-gray-800 text-center py-2 px-4 rounded-lg font-semibold w-11/12"
+      >
+        Back to Dashboard
+      </Link>
+    </div>
+  );
+};
+
 export default Sidebar;
